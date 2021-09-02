@@ -6,7 +6,10 @@
       hidden
       w-52
       overflow-y-auto
-      bg-kemp bg-opacity-70
+      lucent:bg-lucent-default
+      kemp:bg-kemp 
+      lucent:bg-opacity-70
+      kemp:bg-opacity-70
       md:block
       flex-shrink-0
     "
@@ -23,26 +26,117 @@
         ></div
       ></a>
       <ul class="mt-6 text-gray-500">
-        <li class="relative cursor-pointer px-6 py-3 hover:text-black focus:text-black">
-          即時監控
+        <li class="relative cursor-pointer px-6 py-3">
+          <router-link
+            :to="{ name: 'Home' }"
+            class="hover:text-black focus:text-black"
+            :class="[
+              $route.name === 'Home' || $route.name === 'Chart'
+                ? 'text-black'
+                : 'text-gray-500',
+            ]"
+            >{{ $t("Dashboard") }}</router-link
+          >
         </li>
-        <li class="relative cursor-pointer px-6 py-3 hover:text-black focus:text-black">
-          扭力校正
+        <li
+          class="
+            relative
+            cursor-pointer
+            px-6
+            py-3
+          "
+        >
+          <router-link
+            to="/correction"
+            class="hover:text-black focus:text-black"
+            :class="[
+              $route.name === 'CorrectionStep1' ? 'text-black' : 'text-gray-500',
+            ]"
+            >{{ $t("Correction") }}</router-link
+          >
         </li>
-        <li class="relative cursor-pointer px-6 py-3 hover:text-black focus:text-black">
-          參數設定
+        <li
+          class="
+            relative
+            cursor-pointer
+            px-6
+            py-3
+          "
+        >
+          <router-link
+            to="/parameter"
+            class="hover:text-black focus:text-black"
+            :class="[
+              $route.name === 'Parameter' ? 'text-black' : 'text-gray-500',
+            ]"
+            >{{ $t("Parameter") }}</router-link
+          >
         </li>
-        <li class="relative cursor-pointer px-6 py-3 hover:text-black focus:text-black">
+        <li
+          class="
+            relative
+            cursor-pointer
+            px-6
+            py-3
+          "
+        >
+          <router-link
+            to="/connection"
+            class="hover:text-black focus:text-black"
+            :class="[
+              $route.name === 'Connection' ? 'text-black' : 'text-gray-500',
+            ]"
+            >{{ $t("Connect") }}</router-link
+          >
+        </li>
+        <!-- <li
+          class="
+            relative
+            cursor-pointer
+            px-6
+            py-3
+            hover:text-black
+            focus:text-black
+          "
+        >
           數據儲存
+        </li> -->
+        <li
+          class="
+            relative
+            cursor-pointer
+            px-6
+            py-3
+          "
+        >
+          <router-link
+            to="/system"
+            class="hover:text-black focus:text-black"
+            :class="[
+              $route.name === 'System' ? 'text-black' : 'text-gray-500',
+            ]"
+            >{{ $t("System") }}</router-link
+          >
         </li>
-        <li class="relative cursor-pointer px-6 py-3 hover:text-black focus:text-black">
-          通訊連結
-        </li>
-        <li class="relative cursor-pointer px-6 py-3 hover:text-black focus:text-black">
-          系統設置
-        </li>
-        <li class="relative cursor-pointer px-6 py-3 hover:text-black focus:text-black">
-          資訊
+        <li
+          class="
+            relative
+            cursor-pointer
+            px-6
+            py-3
+            hover:text-black
+            focus:text-black
+          "
+        >
+        <router-link
+            to="/info"
+            class="hover:text-black focus:text-black"
+            :class="[
+              $route.name === 'Info' ? 'text-black' : 'text-gray-500',
+            ]"
+            >{{ $t("Info") }}</router-link
+          >
+          
         </li>
       </ul>
     </div>

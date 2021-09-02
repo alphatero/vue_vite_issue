@@ -10,7 +10,10 @@ module.exports = {
     extend: {
       colors: {
         kemp: '#F7B500',
-        lucent: '#F4B839'
+        lucent: {
+          default: '#F4B839',
+          dark: '#F09400'
+        }
       },
       backgroundImage: {
         'logo-kemp': "url('./src/assets/KempLogo.png')",

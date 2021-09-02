@@ -1,51 +1,65 @@
 <template>
-    <div class="w-full">
-        <LineChart :chart-data="datacollection" :options="chartOptions"/>
-    </div>
+  <div class="w-full">
+    <canvas ref="myChart" :width="width" :height="height"></canvas>
+  </div>
 </template>
 
 <script>
-import LineChart from '../LineChart.js'
+import Chart from "chart.js";
 
 export default {
-    components: {
-        LineChart,
+  name: 'LineChart',
+  props: {
+    width: {
+      type: Number,
+      validator: value => value > 0
     },
-    data () {
+
+    height: {
+      type: Number,
+      validator: value => value > 0
+    },
+
+    labels: Array,
+
+    datasets: {
+      type: Array,
+      required: true
+    },
+    type: {
+      type: String,
+      default: 'line'
+    },
+    options: Object
+  },
+  data() {
     return {
-      datacollection: {},
-      tempChart: [],
-      chartOptions: {
-        elements: {
-          point: {
-            radius: 2
-          }
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          xAxes: [{
-            display: true,
-            scaleLabel: {
-              display: true,
-              labelString: 'Time'
-            }
-          }],
-          yAxes: [{
-            display: true,
-            scaleLabel: {
-              display: true,
-              labelString: 'Torque'
-            }
-          }]
-        }
-      },
-      data: {
-        chart: [],
-        isChartEnd: 0,
-        unit: 'Nm'
-      }
+      chart: null
+    };
+  },
+  watch: {
+    datasets(newDatasets) {
+        if (this.chart !== null) {
+            this.chart.data.datasets = newDatasets;
+            this.chart.update();
+        } 
     }
   },
+  mounted() {
+    console.log(this.$refs.myChart);
+    this.chart = new Chart(this.$refs.myChart, {
+      type: this.type,
+      data: {
+        labels: this.labels,
+        datasets: this.datasets
+      },
+      options: this.options
+    });
+  },
+//   beforeUnmount () {
+//     if (this.chart) {
+//       this.chart.destroy()
+//     }
+//   }
 }
 </script>

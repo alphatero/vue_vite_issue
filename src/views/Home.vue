@@ -35,22 +35,22 @@
 
     <!-- Result -->
     <Card
-      class="md:col-span-3 md:row-span-3 md:order-5 text-center"
+      class=" md:row-span-2 md:order-5 text-center bg-green-500"
       :title="title.result"
+      :class="[$route.name === 'Chart' ? 'md:col-span-1': 'md:col-span-3']"
     >
       <div
         class="
-          bg-green-500
           text-white
           rounded-b-md
           flex
           items-center
           justify-center
           text-7xl
-          p-6
+          p-10
         "
       >
-        OK
+        <h4 class="flex-1">Floating</h4>
       </div>
     </Card>
 
@@ -66,9 +66,16 @@
     </Card>
 
     <!-- Error code -->
-    <Card class="md:order-7 md:row-span-2 text-center" :title="title.errorCode">
-      <h4 class="text-center p-4">{{ torError }}</h4>
+    <Card class="md:order-7 md:row-span-2 text-center " :title="title.errorCode">
+
+      <div class="flex-1 flex justify-center items-center">
+
+      <h4 class="text-center p-6 text-xl ">{{ torError }}</h4>
+      </div>
+
     </Card>
+
+    <router-view />
   </div>
 </template>
 
