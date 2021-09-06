@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4">
+  <div class="p-4 flex flex-col justify-between h-full">
     <div class="flex justify-center w-full my-2 ">
       <div class="flex-1"></div>
       <div class="flex-1 text-3xl font-bold text-center">{{ current }}</div>

@@ -28,20 +28,24 @@
         export file
       </button>
     </div>
+
     <Card :title="$t('Torque')">
-      <div class="flex p-4 gap-4 items-center text-gray-400 text-xl">
-        <label for="Target">{{ $t('Target') }}{{ $t('Torque') }}</label>
-        <NumberInput v-model="tarTorque" />
-      </div>
-      <div class="flex p-4 gap-4 items-center text-gray-400 text-xl">
-        <label for="Target">{{ $t('Max') }}{{ $t('Torque') }}</label>
-        <NumberInput v-model="maxTorque" />
-      </div>
-      <div class="flex p-4 gap-4 items-center text-gray-400 text-xl">
-        <label for="Target">{{ $t('Min') }}{{ $t('Torque') }}</label>
-        <NumberInput v-model="minTorque" />
+      <div class="flex flex-col py-6">
+        <div class="flex p-4 gap-4 items-center text-gray-400 text-xl">
+          <label for="Target" class="w-1/4">{{ $t('Target') }}{{ $t('Torque') }}</label>
+          <NumberInput v-model="tarTorque" :control="true" :precision="1"/>
+        </div>
+        <div class="flex p-4 gap-4 items-center text-gray-400 text-xl">
+          <label for="Target" class="w-1/4">{{ $t('Max') }}{{ $t('Torque') }}</label>
+          <NumberInput v-model="maxTorque" :control="true" :precision="1"/>
+        </div>
+        <div class="flex p-4 gap-4 items-center text-gray-400 text-xl">
+          <label for="Target" class="w-1/4">{{ $t('Min') }}{{ $t('Torque') }}</label>
+          <NumberInput v-model="minTorque" :control="true" :precision="1"/>
+        </div>
       </div>
     </Card>
+
   </div>
 </template>
 
@@ -56,7 +60,9 @@ export default {
   },
   data() {
     return {
-      tarTorque: 0,
+      tarTorque: 1,
+      minTorque: 0,
+      maxTorque: 0, 
     };
   },
 };

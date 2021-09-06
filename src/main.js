@@ -6,6 +6,7 @@ import App from './App.vue'
 
 import './index.css'
 import ch from './locales/ch.json'
+import en from './locales/en.json'
 
 import router from './router'
 
@@ -15,6 +16,7 @@ const i18n = createI18n({
     locale: (localStorage.getItem('locale')) || 'ch',
     messages: {
         ch,
+        en, 
     }
 })
 

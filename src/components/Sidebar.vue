@@ -144,5 +144,7 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props:['data'],
+};
 </script>

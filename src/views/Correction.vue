@@ -2,7 +2,7 @@
   <div class="flex justify-center">
     <Card :title="title" class="md:w-9/12 w-full">
       <div class="bg-white rounded-b-md p-10">
-        <div class="grid grid-cols-4 gap-10 m-auto mb-10 text-xl">
+        <div class="grid grid-cols-4 gap-10 m-auto mb-10 text-xl max-w-lg">
           <div
             class="py-2"
             :class="[

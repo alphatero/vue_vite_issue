@@ -19,7 +19,7 @@
           border border-gray-600
         "
       >
-        結果
+        {{ $t('Result') }}
       </router-link>
       <router-link
         :class="[
@@ -40,7 +40,7 @@
           border border-gray-600
         "
       >
-        曲線圖
+        {{ $t('Chart') }}
       </router-link>
     </div>
   </div>

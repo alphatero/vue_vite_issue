@@ -14,7 +14,7 @@
     "
   >
     <div class="bg-black flex h-16 order-first md:order-last">
-      <h5 class="text-white my-auto text-3xl px-5">Device</h5>
+      <h5 class="text-white my-auto text-3xl px-5">Device {{ newDevice }}</h5>
     </div>
     <div
       class="
@@ -35,5 +35,28 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    device: {
+      type: Number,
+      default: null,
+    },
+  },
+  data() {
+    return {
+      newDevice:0
+    };
+  },
+  watch: {
+    device: {
+      handler: function(newVal, val) {
+        if(newVal!==null) {
+          this.newDevice = newVal
+        } else {
+          this.newDevice = val;
+        }
+      }
+    }
+  }
+};
 </script>
