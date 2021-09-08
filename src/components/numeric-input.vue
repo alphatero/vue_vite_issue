@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex border-2 border-gray-400 rounded-lg w-56 justify-between"
+    class="flex border-2 border-gray-400 rounded-lg justify-between"
   >
     <button
       v-if="control"
@@ -11,7 +11,7 @@
         numericValue <=
         min
       "
-      class="text-2xl px-3 mb-1 mt-0.5 ml-0.5 rounded-l-lg text-center text-white"
+      class=" px-3 mb-1 mt-0.5 ml-0.5 rounded-l-lg text-center text-white"
       :class="[
         numericValue <=
         min
@@ -22,7 +22,7 @@
       -
     </button>
     <input
-      class="text-2xl w-3/5 px-2 focus:outline-none rounded-lg"
+      class=" w-3/5 px-2 focus:outline-none rounded-lg"
       ref="input"
       :value="
         numericValue
@@ -47,7 +47,7 @@
       @click="
         increment
       "
-      class="text-2xl px-3 mb-1 mt-0.5 mr-0.5 rounded-r-lg bg-gray-400 text-center text-white shadow-dark hover:bg-gray-600 active:bg-gray-600 active:shadow-none"
+      class=" px-3 mb-1 mt-0.5 mr-0.5 rounded-r-lg bg-gray-400 text-center text-white shadow-dark hover:bg-gray-600 active:bg-gray-600 active:shadow-none"
     >
       +
     </button>

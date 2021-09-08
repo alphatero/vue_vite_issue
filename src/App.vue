@@ -36,7 +36,7 @@ export default {
       console.log('this data:', data)
     },
     path() {
-      const page = 0;
+      const page = 1;
       const sendPage = JSON.stringify({ page: page });
       if (ws.readyState === 1) {
         ws.send(sendPage);

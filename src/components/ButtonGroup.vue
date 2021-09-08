@@ -18,6 +18,7 @@
           cursor-pointer
           border border-gray-600
         "
+        @click="sendPage(0)"
       >
         {{ $t('Result') }}
       </router-link>
@@ -39,9 +40,26 @@
           cursor-pointer
           border border-gray-600
         "
+        @click="sendPage(1)"
       >
         {{ $t('Chart') }}
       </router-link>
     </div>
   </div>
 </template>
+
+<script>
+import { ws } from '../websocket'
+
+export default {
+
+  methods: {
+    sendPage(val) {
+      const index = val;
+      const sendPage = JSON.stringify({ page: index });
+      ws.send(sendPage);
+      console.log(sendPage);
+    },
+  }
+}
+</script>

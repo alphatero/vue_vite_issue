@@ -5,11 +5,11 @@
     </div>
     <div class="flex justify-around font-bold text-gray-400 mb-8 gap-14">
       <h4 class="text-2xl text-right pr-10 flex-1">Slope</h4>
-      <h4 class="text-2xl flex-1">0.54</h4>
+      <h4 class="text-2xl flex-1">{{ newSlope }}</h4>
     </div>
     <div class="flex justify-around font-bold text-gray-400 mb-14 gap-14">
       <h4 class="text-2xl text-right pr-10 flex-1">Intercept</h4>
-      <h4 class="text-2xl flex-1">0.12</h4>
+      <h4 class="text-2xl flex-1">{{ newIntercept }}</h4>
     </div>
     <div class="flex justify-center">
       <router-link
@@ -26,6 +26,7 @@
           text-center
         "
         :to="{ name: 'CorrectionStep2' }"
+        @click="sendPage(3)"
       >
         {{ $t('Next') }}
       </router-link>
@@ -34,5 +35,37 @@
 </template>
 
 <script>
-export default {};
+import { ws } from '../websocket'
+
+export default {
+  props:{
+    intercept: {
+      type: Number,
+      default: 0
+    },
+    slope: {
+      type: Number,
+      default: 0
+    },
+  },
+  methods: {
+    sendPage(val) {
+      const index = val;
+      const sendPage = JSON.stringify({ page: index });
+      ws.send(sendPage);
+      console.log(sendPage);
+    },
+  },
+  computed: {
+    newSlope() {
+      return this.slope / 100;
+    },
+    newIntercept() {
+      return this.intercept / 100;
+    }
+  },
+  created() {
+    ws.addEventListener('open', this.sendPage(2))
+  }
+};
 </script>

@@ -47,6 +47,9 @@ export default {
       newDevice:0
     };
   },
+  methods: {
+    
+  },
   watch: {
     device: {
       handler: function(newVal, val) {

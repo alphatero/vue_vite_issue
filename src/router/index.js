@@ -16,7 +16,7 @@ const routes = [
   {
     path: "/correction",
     name: "Correction",
-    meta: { requiresAuth: true },
+    params: {pos: 2},
     component: () => import("../views/Correction.vue"),
     children: [
       {
@@ -24,11 +24,13 @@ const routes = [
         name: 'CorrectionStep1',
         alias: '/correction',
         meta: { requiresAuth: true },
+
         component: () => import("../components/Correction_1.vue")
       },
       {
         path: 'step2',
         name: 'CorrectionStep2',
+        params: {pos: 2},
         component: () => import("../components/Correction_2.vue")
       },
       {

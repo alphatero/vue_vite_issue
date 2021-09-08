@@ -11,6 +11,7 @@ import en from './locales/en.json'
 import router from './router'
 
 
+
 const i18n = createI18n({
     legacy: true,
     locale: (localStorage.getItem('locale')) || 'ch',
@@ -26,6 +27,7 @@ const app = createApp(App);
 
 app.use(router);
 app.use(i18n);
+
 
 
 

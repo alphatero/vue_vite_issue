@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-4 items-center justify-center">
     <!-- Device -->
-    <Card :title="$t('DeviceRename')" class="md:w-3/5">
+    <Card :title="$t('DeviceRename')" class="lg:w-3/5 w-full">
       <div class="flex flex-col px-4 py-6">
         <div class="flex text-gray-400">
           <label class="text-2xl w-1/3">Device</label>
@@ -31,7 +31,7 @@
     </Card>
 
     <!-- Language -->
-    <Card :title="$t('Language')" class="md:w-3/5">
+    <Card :title="$t('Language')" class="lg:w-3/5 w-full">
       <div class="flex px-4 py-6 text-gray-400">
         <select
           class="w-40 text-2xl border border-gray-600 py-1 px-2"
@@ -47,7 +47,7 @@
     </Card>
 
     <!-- Unit -->
-    <Card :title="$t('Torque') + $t('Unit')" class="md:w-3/5">
+    <Card :title="$t('Torque') + $t('Unit')" class="lg:w-3/5 w-full">
       <div class="flex px-4 py-6 text-gray-400">
         <select
           class="w-40 text-2xl border border-gray-600 py-1 px-2"

@@ -15,9 +15,9 @@
   >
     <h4 class="text-3xl">Chart</h4>
     <Draw
-      :datasets="dataset"
+      :newChartArray="newChartArray"
       :options="chartOptions"
-      :labels="[1, 2, 3]"
+      :labels="index"
       :width="300"
       :height="300"
     />
@@ -26,6 +26,7 @@
 
 <script>
 import Draw from '../components/Draw.vue';
+//import { ws } from '../websocket';
 
 // const datasets = [5,6,8];
 
@@ -33,14 +34,21 @@ export default {
   components: {
     Draw,
   },
+  props: {
+    newChart: Array,
+    newChartEnd: Number,
+  },
   data() {
     return {
+      data_chart: [],
+      newChartArray: [],
+      index: [],
       dataset: [
         {
           label: 'Torque',
           borderColor: 'blue',
           fill: false,
-          data: [1, 2, 3],
+          data: this.newCartArray,
         },
       ],
       chartOptions: {
@@ -73,6 +81,30 @@ export default {
         },
       },
     };
+  },
+
+  computed: {
+
+  },
+
+  watch: {
+    newChart:{
+      handler: function (newVal, val) {
+        if(this.chart === null) {
+          this.data_chart = val;
+        } else {
+          this.data_chart = newVal;
+        const result = Object.keys(this.data_chart).map((key) => this.data_chart[key] / 1000)
+        console.log('data_chart', result)
+        const index = []
+        for(let i=0; i< this.data_chart.length; i++) {
+          index.push(i)
+        }
+        this.index = index;
+        this.newChartArray = result;
+        }
+      }
+    }
   },
 };
 </script>

@@ -5,61 +5,76 @@
 </template>
 
 <script>
-import Chart from "chart.js";
+import Chart from 'chart.js';
 
 export default {
   name: 'LineChart',
   props: {
     width: {
       type: Number,
-      validator: value => value > 0
+      validator: (value) => value > 0,
     },
 
     height: {
       type: Number,
-      validator: value => value > 0
+      validator: (value) => value > 0,
     },
 
     labels: Array,
 
-    datasets: {
+    newChartArray: {
       type: Array,
-      required: true
+      required: true,
     },
     type: {
       type: String,
-      default: 'line'
+      default: 'line',
     },
-    options: Object
+    options: Object,
   },
   data() {
     return {
-      chart: null
+      chart: null,
     };
+  },
+  methods: {
+    drawChart() {
+      
+    }
   },
   watch: {
     datasets(newDatasets) {
-        if (this.chart !== null) {
-            this.chart.data.datasets = newDatasets;
-            this.chart.update();
-        } 
-    }
-  },
-  mounted() {
-    console.log(this.$refs.myChart);
-    this.chart = new Chart(this.$refs.myChart, {
-      type: this.type,
-      data: {
-        labels: this.labels,
-        datasets: this.datasets
+      if (this.chart !== null) {
+        this.chart.data.datasets = newDatasets;
+        this.chart.update();
+      }
+    },
+    newChartArray: {
+      handler: function () {
+        console.log(this.$refs.myChart);
+        this.chart = new Chart(this.$refs.myChart, {
+          type: this.type,
+          data: {
+            labels: this.labels,
+            datasets: [
+              {
+                label: 'Torque',
+                borderColor: 'blue',
+                fill: false,
+                data: this.newChartArray,
+              },
+            ],
+          },
+          options: this.options,
+        });
       },
-      options: this.options
-    });
+    },
   },
-//   beforeUnmount () {
-//     if (this.chart) {
-//       this.chart.destroy()
-//     }
-//   }
-}
+  mounted() {},
+  //   beforeUnmount () {
+  //     if (this.chart) {
+  //       this.chart.destroy()
+  //     }
+  //   }
+};
 </script>

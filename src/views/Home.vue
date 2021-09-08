@@ -93,7 +93,7 @@
       </div>
     </Card>
 
-    <router-view />
+    <router-view :newChart="newChart" :newChartEnd="newChartEnd"/>
   </div>
 </template>
 
@@ -111,7 +111,7 @@ export default {
   props: {
     unit: {
       type: String,
-      default: 'Num',
+      default: 'Nm',
     },
     minSpecTorque: {
       type: Number,
@@ -119,7 +119,7 @@ export default {
     },
     curTorque: {
       type: Number,
-      default: 0,
+      default: null,
     },
     tarTorque: {
       type: Number,
@@ -133,69 +133,25 @@ export default {
       type: Number,
       default: 0,
     },
-    curTime: {
-      type: Number,
-      default: 0,
-    },
-    tarTime: {
-      type: Number,
-      default: 0,
-    },
-    maxTime: {
-      type: Number,
-      default: 0,
-    },
-    minTime: {
-      type: Number,
-      default: 0,
-    },
-    curTurns: {
-      type: Number,
-      default: 0,
-    },
-    tarTurns: {
-      type: Number,
-      default: 0,
-    },
-    maxTurns: {
-      type: Number,
-      default: 0,
-    },
-    minTurns: {
-      type: Number,
-      default: 0,
-    },
-    curScrew: {
-      type: Number,
-      default: 0,
-    },
-    totalScrew: {
-      type: Number,
-      default: 0,
-    },
-    result: {
-      type: Number,
-      default: 0,
-    },
-    errorCode: {
-      type: String,
-      default: '',
-    }
+    curTime: Number,
+    tarTime: Number,
+    maxTime: Number,
+    minTime: Number,
+    curTurns: Number,
+    tarTurns: Number,
+    maxTurns:Number,
+    minTurns: Number,
+    curScrew: Number,
+    totalScrew: Number,
+    result: Number,
+    errorCode: Number,
+    chart: Array,
+    isChartEnd: Number,
   },
   data() {
     return {
-      turns: {
-        current: 0.2,
-        target: 0.5,
-        max: 1,
-        min: 0.1,
-      },
-      screws: {
-        current: 1,
-        total: 5,
-      },
-      torError: 'EA-01',
-      screw: 20,
+      newChart: [],
+      newChartEnd: 0,
     };
   },
   methods: {
@@ -287,5 +243,16 @@ export default {
       return this.handlerSecondErrorCode(this.errorCode);
     }
   },
+  watch: {
+    chart: {
+      handler: function(newVal, val) {
+        if(newVal !== null) {
+          this.newChart = newVal;
+        } else {
+          this.newChart = val;
+        }
+      }
+    }
+  }
 };
 </script>
