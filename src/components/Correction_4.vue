@@ -25,9 +25,9 @@
           w-24
           text-center
         "
-        :to="{ name: 'CorrectionStep2' }"
+        :to="{ name: 'CorrectionStep1' }"
       >
-        {{ $t('Next') }}
+        {{ $t('Return') }}
       </router-link>
     </div>
   </div>

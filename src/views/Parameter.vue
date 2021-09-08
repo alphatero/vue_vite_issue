@@ -33,7 +33,7 @@
       <div class="flex flex-col py-6">
         <div class="flex p-4 gap-4 items-center text-gray-400 text-xl">
           <label for="Target" class="w-1/4">{{ $t('Target') }}{{ $t('Torque') }}</label>
-          <NumberInput v-model="tarTorque" :control="true" :precision="1"/>
+          <NumberInput v-model="tarTorque" :control="true" :precision="1" :max="2"/>
         </div>
         <div class="flex p-4 gap-4 items-center text-gray-400 text-xl">
           <label for="Target" class="w-1/4">{{ $t('Max') }}{{ $t('Torque') }}</label>
@@ -62,7 +62,7 @@ export default {
     return {
       tarTorque: 1,
       minTorque: 0,
-      maxTorque: 0, 
+      maxTorque: 0,
     };
   },
 };

@@ -58,7 +58,7 @@
         <option :value="{value:unit.value,name:unit.name}" v-for="(unit, i) in units" :key="i">
           {{ unit.name }}
         </option>
-          
+
         </select>
       </div>
     </Card>
@@ -165,18 +165,18 @@ export default {
   data() {
     return {
       langs: [
-        { name: 'ch', text: '繁體中文', value: 0},
-        { name: 'en', text: 'English', value: 1},
-      ]  ,
+        { name: 'ch', text: '繁體中文', value: 0 },
+        { name: 'en', text: 'English', value: 1 },
+      ],
       selectUnit: {
         value: 0,
-        name: 'Nm'
+        name: 'Nm',
       },
       units: [
-        { value: 0, name: 'Nm'},
-        { value: 1, name: 'kgf-cm'},
-        { value: 2, name: 'lb-in'}
-      ]      
+        { value: 0, name: 'Nm' },
+        { value: 1, name: 'kgf-cm' },
+        { value: 2, name: 'lb-in' },
+      ],
     };
   },
 };

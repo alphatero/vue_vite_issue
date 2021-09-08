@@ -44,22 +44,22 @@ export default {
   },
   data() {
     return {
-      newDevice:0
+      newDevice: 0,
     };
   },
   methods: {
-    
+
   },
   watch: {
     device: {
-      handler: function(newVal, val) {
-        if(newVal!==null) {
-          this.newDevice = newVal
+      handler(newVal, val) {
+        if (newVal !== null) {
+          this.newDevice = newVal;
         } else {
           this.newDevice = val;
         }
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>

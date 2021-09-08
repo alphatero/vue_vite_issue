@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { ws } from '../websocket'
+import { ws } from '../websocket';
 
 export default {
 
@@ -60,6 +60,6 @@ export default {
       ws.send(sendPage);
       console.log(sendPage);
     },
-  }
-}
+  },
+};
 </script>

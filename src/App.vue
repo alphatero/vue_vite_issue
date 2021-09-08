@@ -4,7 +4,6 @@
     <div class="flex flex-col flex-1 w-full bg-gray-50">
       <Navbar  v-bind="data"/>
 
-
       <main class="h-full overflow-y-auto bg-gray-100">
         <div class="container px-6 mx-auto grid py-10">
           <router-view v-bind="data"></router-view>
@@ -23,7 +22,7 @@ export default {
   data() {
     return {
       data: {},
-    }
+    };
   },
   components: {
     Sidebar,
@@ -32,23 +31,24 @@ export default {
   methods: {
     listen(e) {
       const data = JSON.parse(e.data);
-      this.data = data
-      console.log('this data:', data)
+      this.data = data;
+      console.log('this data:', data);
     },
-    path() {
-      const page = 1;
-      const sendPage = JSON.stringify({ page: page });
-      if (ws.readyState === 1) {
-        ws.send(sendPage);
+    changePath() {
+      const link = window.location.pathname;
+      const word = 'correction';
+      if (link.includes(word)) {
+        console.log('include');
+        this.$router.replace('/correction').catch();
       }
-    }
+    },
   },
   created() {
     const vm = this;
-    ws.addEventListener('open', vm.path)
-    vm.path();
+    vm.changePath();
+    ws.addEventListener('open', vm.changePath());
     ws.addEventListener('message', vm.listen);
-  }
+  },
 };
 
 // This starter template is using Vue 3 experimental <script setup> SFCs

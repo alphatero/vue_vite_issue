@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "Card",
-  props: ['title','className']
-}
+  name: 'Card',
+  props: ['title', 'className'],
+};
 </script>

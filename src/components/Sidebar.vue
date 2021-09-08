@@ -40,13 +40,8 @@
         </li>
         <li class="relative cursor-pointer px-6 py-3">
           <router-link
-            to="/correction"
+            :to="{ name: 'Correction' }"
             class="hover:text-black focus:text-black"
-            :class="[
-              $route.matched[0].path === '/correction'
-                ? 'text-black'
-                : 'text-gray-500',
-            ]"
             >{{ $t('Correction') }}</router-link
           >
         </li>

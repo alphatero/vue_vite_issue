@@ -39,8 +39,8 @@ export default {
   },
   methods: {
     drawChart() {
-      
-    }
+
+    },
   },
   watch: {
     datasets(newDatasets) {
@@ -50,7 +50,7 @@ export default {
       }
     },
     newChartArray: {
-      handler: function () {
+      handler() {
         console.log(this.$refs.myChart);
         this.chart = new Chart(this.$refs.myChart, {
           type: this.type,

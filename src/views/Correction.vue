@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center">
-    <Card :title="title" class="md:w-9/12 w-full">
+    <Card :title="$t('Correction')" class="md:w-9/12 w-full">
       <div class="bg-white rounded-b-md p-2 sm:p-10">
         <div
           class="
@@ -52,11 +52,43 @@
               Step 2
             </p>
           </div>
-          <div class="border-gray-500 py-2">
-            <p class="uppercase text-gray-400 font-bold px-2">Step 3</p>
+          <div
+            class="py-2"
+            :class="[
+              $route.name === 'CorrectionStep3'
+                ? 'border-b-4 lucent:border-lucent-default kemp:border-kemp'
+                : '',
+            ]"
+          >
+            <p
+              class="uppercase font-bold px-2 text-center"
+              :class="[
+                $route.name === 'CorrectionStep3'
+                  ? 'lucent:text-lucent-default kemp:text-kemp'
+                  : 'text-gray-400',
+              ]"
+            >
+              Step 3
+            </p>
           </div>
-          <div class="border-gray-500 py-2">
-            <p class="uppercase text-gray-400 font-bold px-2">Step 4</p>
+          <div
+            class="py-2"
+            :class="[
+              $route.name === 'CorrectionStep4'
+                ? 'border-b-4 lucent:border-lucent-default kemp:border-kemp'
+                : '',
+            ]"
+          >
+            <p
+              class="uppercase font-bold px-2 text-center"
+              :class="[
+                $route.name === 'CorrectionStep4'
+                  ? 'lucent:text-lucent-default kemp:text-kemp'
+                  : 'text-gray-400',
+              ]"
+            >
+              Step 4
+            </p>
           </div>
         </div>
         <router-view
@@ -64,6 +96,7 @@
           :intercept="intercept"
           :minTorqueVoltage="minTorqueVoltage"
           :totalPointNum="totalPointNum"
+          :curPointNum="curPointNum"
         ></router-view>
       </div>
     </Card>
@@ -80,14 +113,17 @@ export default {
     minTorqueVoltage: Number,
     maxTorqueVoltage: Number,
     totalPointNum: Number,
+    curPointNum: Number,
   },
   components: {
     Card,
   },
   data() {
     return {
-      title: this.$t('Correction'),
     };
+  },
+  created() {
+    console.log(this.$route);
   },
 };
 </script>

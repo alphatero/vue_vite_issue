@@ -3,10 +3,14 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "lint": "lint"
   },
   "dependencies": {
     "chart.js": "^2.9.4",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.24.2",
     "mitt": "^3.0.0",
     "tailwindcss-multi-theme": "^1.0.4",
     "vue": "3.0.5",
@@ -18,7 +22,7 @@
     "@vitejs/plugin-vue": "^1.2.3",
     "@vue/compiler-sfc": "3.0.5",
     "eslint": "^7.32.0",
-    "eslint-plugin-vue": "^7.16.0",
+    "eslint-plugin-vue": "^7.17.0",
     "vitawind": "^1.2.7",
     "vite": "^2.4.4",
     "vite-plugin-singlefile": "^0.5.1"

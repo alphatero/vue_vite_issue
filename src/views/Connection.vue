@@ -20,11 +20,11 @@ export default {
   },
   data() {
     return {
-      title:{
-        status:this.$t('ConnectStatus'),
-        ip: 'IP'
+      title: {
+        status: this.$t('ConnectStatus'),
+        ip: 'IP',
       },
-      ip: '192.168.1.112'
+      ip: '192.168.1.112',
     };
   },
 };
