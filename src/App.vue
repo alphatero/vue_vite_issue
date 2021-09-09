@@ -21,7 +21,9 @@ import { ws } from './websocket';
 export default {
   data() {
     return {
-      data: {},
+      data: {
+        temp: {},
+      },
     };
   },
   components: {
@@ -31,8 +33,13 @@ export default {
   methods: {
     listen(e) {
       const data = JSON.parse(e.data);
-      this.data = data;
+      this.data.temp = data;
       console.log('this data:', data);
+      if (data.language === 0) {
+        this.$i18n.locale = 'ch';
+      } else if (data.language === 1) {
+        this.$i18n.locale = 'en';
+      }
     },
     changePath() {
       const link = window.location.pathname;

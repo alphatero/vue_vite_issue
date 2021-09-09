@@ -14,7 +14,7 @@
     "
   >
     <div class="bg-black flex h-16 order-first md:order-last">
-      <h5 class="text-white my-auto text-3xl px-5">Device {{ newDevice }}</h5>
+      <h5 class="text-white my-auto text-2xl px-5">Device {{ newDevice }}</h5>
     </div>
     <div
       class="
@@ -37,10 +37,7 @@
 <script>
 export default {
   props: {
-    device: {
-      type: Number,
-      default: null,
-    },
+    temp: Object,
   },
   data() {
     return {

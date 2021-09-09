@@ -92,11 +92,7 @@
           </div>
         </div>
         <router-view
-          :slope="slope"
-          :intercept="intercept"
-          :minTorqueVoltage="minTorqueVoltage"
-          :totalPointNum="totalPointNum"
-          :curPointNum="curPointNum"
+          v-bind="tempData"
         ></router-view>
       </div>
     </Card>
@@ -108,22 +104,30 @@ import Card from '../components/Card.vue';
 
 export default {
   props: {
-    slope: Number,
-    intercept: Number,
-    minTorqueVoltage: Number,
-    maxTorqueVoltage: Number,
-    totalPointNum: Number,
-    curPointNum: Number,
+    temp: Object,
   },
   components: {
     Card,
   },
   data() {
     return {
+      tempData: {
+        temp: {},
+      },
     };
   },
+  methods: {
+    postTemp() {
+      this.tempData.temp = this.temp;
+    },
+  },
+  watch: {
+    temp() {
+      this.postTemp();
+    },
+  },
   created() {
-    console.log(this.$route);
+    console.log('route', this.$route);
   },
 };
 </script>

@@ -2,8 +2,8 @@
   <div class="bg-white rounded-b-md mb:px-10">
     <!-- main -->
     <div class="flex text-xl md:text-2xl text-gray-400 mb-8 gap-8 lg:gap-20 items-center">
-      <h4 class="text-right w-1/2">{{ $t('MinTorque') }}</h4>
-      <h4 class="w-1/2">{{ minTorque }}</h4>
+      <h4 class="text-right w-1/2">{{ $t('MaxTorque') }}</h4>
+      <h4 class="w-1/2">{{ maxTorqueVoltage }}</h4>
     </div>
     <div class="flex text-xl md:text-2xl text-gray-400 mb-8 gap-8 lg:gap-20 items-center">
       <h4 class="text-right w-1/2">{{ $t('TorqueSensoer') }}</h4>
@@ -12,14 +12,14 @@
           class="w-28"
           :max="3"
           :precision="2"
-          v-model="minTorqueInput"
-          @keyup.enter="minTorqueInput > 0 && sendVal()"
+          v-model="maxTorqueInput"
+          @keyup.enter="maxTorqueInput > 0 && sendVal()"
         >
         </NumberInput>
       </div>
     </div>
     <div class="flex text-gray-400 justify-center text-xl">
-      <p>point:{{ totalPointNum }}</p>
+      <p>point:{{ curPointNum }}/{{ totalPointNum }}</p>
     </div>
 
     <!-- button group -->
@@ -56,7 +56,7 @@
         "
         @click="sendVal()"
         :class="[
-          totalPointNum >= 10 || minTorqueInput === 0
+          curPointNum >= totalPointNum || maxTorqueInput === 0
             ? 'opacity-50 cursor-not-allowed pointer-events-none'
             : '',
         ]"
@@ -95,7 +95,9 @@
           w-24
           text-center
         "
-        :class="[totalPointNum > 0 ? '' : 'opacity-50 cursor-not-allowed pointer-events-none']"
+        :class="[
+          curPointNum === totalPointNum ? '' : 'opacity-50 cursor-not-allowed pointer-events-none',
+        ]"
         :to="{ name: 'CorrectionStep4' }"
       >
         {{ $t('Next') }}
@@ -113,13 +115,15 @@ export default {
     NumberInput,
   },
   props: {
-    minTorqueVoltage: Number,
-    totalPointNum: Number,
+    temp: Object,
   },
   data() {
     return {
-      minTorqueInput: 0,
-      isContinue: false,
+      maxTorqueInput: 0,
+      unit: 'Nm',
+      maxTorqueVoltage: 0,
+      curPointNum: 0,
+      totalPointNum: 0,
     };
   },
   methods: {
@@ -132,7 +136,7 @@ export default {
     sendVal() {
       const sendVal = JSON.stringify({
         pointConfirm: 1,
-        minTorqueInput: this.minTorqueInput * 1000,
+        maxTorqueInput: this.maxTorqueInput * 1000,
       });
       ws.send(sendVal);
     },
@@ -144,10 +148,41 @@ export default {
       const sendReset = JSON.stringify({ reset: 1 });
       ws.send(sendReset);
     },
+    initData() {
+      if (this.temp.unit !== undefined) {
+        this.unit = this.temp.unit;
+      }
+      if (this.temp.maxTorqueVoltage !== undefined) {
+        this.maxTorqueVoltage = parseInt(this.temp.maxTorqueVoltage, 10) / 1000;
+      }
+      if (this.temp.minSpecTorque !== undefined) {
+        this.minSpecTorque = parseInt(this.temp.minSpecTorque, 10);
+      }
+      if (this.temp.curPointNum !== undefined) {
+        this.curPointNum = parseInt(this.temp.curPointNum, 10);
+      }
+      if (this.temp.totalPointNum !== undefined) {
+        this.totalPointNum = parseInt(this.temp.totalPointNum, 10);
+      }
+      if (this.temp.maxTorqueInput !== undefined) {
+        this.toPrecision();
+      }
+    },
+    toPrecision() {
+      if (this.unit === 'Nm' && this.minSpecTorque > 100) {
+        this.precision = 2;
+      } else if (this.unit === 'Nm' && this.minSpecTorque < 100) {
+        this.precision = 3;
+      } else if (this.unit !== 'Nm' && this.minSpecTorque > 1000) {
+        this.precision = 2;
+      } else if (this.unit !== 'Nm' && this.minSpecTorque < 1000) {
+        this.precision = 3;
+      }
+    },
   },
-  computed: {
-    minTorque() {
-      return this.minTorqueVoltage / 1000 || 0;
+  watch: {
+    temp() {
+      this.initData();
     },
   },
   created() {

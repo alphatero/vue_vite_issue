@@ -38,16 +38,23 @@ import { ws } from '../websocket';
 
 export default {
   props: {
-    intercept: {
-      type: Number,
-      default: 0,
-    },
-    slope: {
-      type: Number,
-      default: 0,
-    },
+    temp: Object,
+  },
+  data() {
+    return {
+      slope: 0,
+      intercept: 0,
+    };
   },
   methods: {
+    checkVal() {
+      if (this.temp.slope !== undefined) {
+        this.slope = parseInt(this.temp.slope, 10) / 100;
+      }
+      if (this.temp.intercept !== undefined) {
+        this.intercept = parseInt(this.temp.intercept, 10) / 100;
+      }
+    },
     sendPage(val) {
       const index = val;
       const sendPage = JSON.stringify({ page: index });
@@ -55,12 +62,9 @@ export default {
       console.log(sendPage);
     },
   },
-  computed: {
-    newSlope() {
-      return this.slope / 100;
-    },
-    newIntercept() {
-      return this.intercept / 100;
+  watch: {
+    temp() {
+      this.checkVal();
     },
   },
   created() {

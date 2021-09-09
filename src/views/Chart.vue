@@ -15,7 +15,7 @@
   >
     <h4 class="text-3xl">Chart</h4>
     <Draw
-      :newChartArray="newChartArray"
+      :datacollection="datacollection"
       :options="chartOptions"
       :labels="index"
       :width="300"
@@ -35,22 +35,12 @@ export default {
     Draw,
   },
   props: {
-    newChart: Array,
-    newChartEnd: Number,
+    temp: Object,
   },
   data() {
     return {
-      data_chart: [],
-      newChartArray: [],
-      index: [],
-      dataset: [
-        {
-          label: 'Torque',
-          borderColor: 'blue',
-          fill: false,
-          data: this.newCartArray,
-        },
-      ],
+      datacollection: {},
+      tempChart: [],
       chartOptions: {
         elements: {
           point: {
@@ -80,28 +70,57 @@ export default {
           ],
         },
       },
+      data: {
+        chart: [],
+        isChartEnd: 0,
+        unit: 'Nm',
+      },
     };
   },
-
-  computed: {},
-
-  watch: {
-    newChart: {
-      handler(newVal, val) {
-        if (this.chart === null) {
-          this.data_chart = val;
-        } else {
-          this.data_chart = newVal;
-          const result = Object.keys(this.data_chart).map((key) => this.data_chart[key] / 1000);
-          console.log('data_chart', result);
-          const index = [];
-          for (let i = 0; i < this.data_chart.length; i += 1) {
-            index.push(i);
-          }
-          this.index = index;
-          this.newChartArray = result;
+  methods: {
+    checkChart() {
+      if (this.temp.chart !== undefined) {
+        const chartArray = [];
+        for (let i = 0; i < this.temp.chart.length; i += 1) {
+          const value = this.temp.chart[i] / 1000;
+          chartArray.push(value);
+          console.log(chartArray);
         }
-      },
+        console.log(`chartArray:${chartArray}`);
+        if (this.temp.isChartEnd != null) {
+          // console.log('isChart', temp.isChartEnd)
+          console.log(`chartArray2:${chartArray}`);
+          this.tempChart = this.tempChart.concat(chartArray);
+          console.log('tempChart:', this.tempChart);
+          if (this.temp.isChartEnd === 1) {
+            this.handleChartDraw();
+          }
+        }
+      }
+    },
+    handleChartDraw() {
+      const index = [];
+      for (let i = 0; i < this.tempChart.length; i += 1) {
+        index.push(i);
+      }
+      this.datacollection = {
+        labels: index,
+        datasets: [
+          {
+            label: 'Torque',
+            fill: false,
+            borderColor: 'blue',
+            data: this.tempChart,
+          },
+        ],
+      };
+      this.tempChart = [];
+      localStorage.setItem('thisChart', JSON.stringify(this.datacollection));
+    },
+  },
+  watch: {
+    temp() {
+      this.checkChart();
     },
   },
 };

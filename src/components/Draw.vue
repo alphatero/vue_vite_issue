@@ -22,7 +22,7 @@ export default {
 
     labels: Array,
 
-    newChartArray: {
+    datacollection: {
       type: Array,
       required: true,
     },
@@ -49,28 +49,20 @@ export default {
         this.chart.update();
       }
     },
-    newChartArray: {
+    datacollection: {
       handler() {
         console.log(this.$refs.myChart);
         this.chart = new Chart(this.$refs.myChart, {
           type: this.type,
           data: {
             labels: this.labels,
-            datasets: [
-              {
-                label: 'Torque',
-                borderColor: 'blue',
-                fill: false,
-                data: this.newChartArray,
-              },
-            ],
+            datasets: this.datasets,
           },
           options: this.options,
         });
       },
     },
   },
-  mounted() {},
   //   beforeUnmount () {
   //     if (this.chart) {
   //       this.chart.destroy()

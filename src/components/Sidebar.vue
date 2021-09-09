@@ -108,7 +108,6 @@
 </template>
 
 <script>
-import { ws } from '../websocket';
 
 export default {
   props: ['data'],
@@ -116,12 +115,6 @@ export default {
     return {};
   },
   methods: {
-    sendPage(val) {
-      const index = val;
-      const sendPage = JSON.stringify({ page: index });
-      ws.send(sendPage);
-      console.log(sendPage);
-    },
   },
 };
 </script>

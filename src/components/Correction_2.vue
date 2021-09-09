@@ -13,7 +13,7 @@
       "
     >
       <h4 class="text-right w-1/2">{{ $t('MinTorque') }}</h4>
-      <h4 class="w-1/2">{{ minTorque }}</h4>
+      <h4 class="w-1/2">{{ minTorqueVoltage }}</h4>
     </div>
     <div
       class="
@@ -31,8 +31,8 @@
       <div class="w-1/2">
         <NumberInput
           class="w-28"
-          :max="3"
-          :precision="2"
+          :min="0"
+          :precision="precision"
           v-model="minTorqueInput"
           @keyup.enter="minTorqueInput > 0 && sendVal()"
         >
@@ -131,18 +131,23 @@
 import NumberInput from './numeric-input.vue';
 import { ws } from '../websocket';
 
+// we don't need maximum range because maybe torquesensor's value larger than range
+
 export default {
   components: {
     NumberInput,
   },
   props: {
-    minTorqueVoltage: Number,
-    totalPointNum: Number,
+    temp: Object,
   },
   data() {
     return {
       minTorqueInput: 0,
-      isContinue: false,
+      unit: 'Nm',
+      precision: 2,
+      minSpecTorque: 0,
+      minTorqueVoltage: 0,
+      totalPointNum: 0,
     };
   },
   methods: {
@@ -167,10 +172,40 @@ export default {
       const sendReset = JSON.stringify({ reset: 1 });
       ws.send(sendReset);
     },
+    initData() {
+      if (this.temp.unit !== undefined) {
+        this.unit = this.temp.unit;
+      }
+      if (this.temp.minTorqueVoltage !== undefined) {
+        this.minTorqueVoltage = parseInt(this.temp.minTorqueVoltage, 10) / 1000;
+      }
+      if (this.temp.minSpecTorque !== undefined) {
+        this.minSpecTorque = parseInt(this.temp.minSpecTorque, 10);
+      }
+      if (this.temp.totalPointNum !== undefined) {
+        this.totalPointNum = parseInt(this.temp.totalPointNum, 10);
+      }
+      if (this.temp.minTorqueInput !== undefined) {
+        this.toPrecision();
+      }
+    },
+    toPrecision() {
+      if (this.unit === 'Nm' && this.minSpecTorque > 100) {
+        this.precision = 2;
+      } else if (this.unit === 'Nm' && this.minSpecTorque < 100) {
+        this.precision = 3;
+      } else if (this.unit !== 'Nm' && this.minSpecTorque > 1000) {
+        this.precision = 2;
+      } else if (this.unit !== 'Nm' && this.minSpecTorque < 1000) {
+        this.precision = 3;
+      }
+    },
   },
   computed: {
-    minTorque() {
-      return this.minTorqueVoltage / 1000 || 0;
+  },
+  watch: {
+    temp() {
+      this.initData();
     },
   },
   created() {

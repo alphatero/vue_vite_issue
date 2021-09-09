@@ -3,25 +3,27 @@
     <!-- Torque -->
     <Card class="md:order-1 md:row-span-2 text-center" :title="$t('Torque')">
       <DataView
-        :current="newCurTorque"
-        :target="newTarTorque"
-        :max="newMaxTorque"
-        :min="newMinTorque"
+        :current="curTorque"
+        :target="tarTorque"
+        :max="maxTorque"
+        :min="minTorque"
+        :unit="unit"
       />
     </Card>
 
     <!-- Time -->
     <Card class="md:order-2 md:row-span-2 text-center" :title="$t('Time')">
-      <DataView :current="newCurTime" :target="newTarTime" :max="newMaxTime" :min="newMinTime" />
+      <DataView :current="curTime" :target="tarTime" :max="maxTime" :min="minTime" :unit="'sec'" />
     </Card>
 
     <!-- Turns -->
     <Card class="md:order-3 md:row-span-2 text-center" :title="$t('Turns')">
       <DataView
-        :current="newCurTurns"
-        :target="newTarTurns"
-        :max="newMaxTurns"
-        :min="newMinTurns"
+        :current="curTurns"
+        :target="tarTurns"
+        :max="maxTurns"
+        :min="minTurns"
+        :unit="'turns'"
       />
     </Card>
 
@@ -85,7 +87,7 @@
       </div>
     </Card>
 
-    <router-view :newChart="newChart" :newChartEnd="newChartEnd" />
+    <router-view :v-bind="chartData" />
   </div>
 </template>
 
@@ -93,6 +95,7 @@
 import Card from '../components/Card.vue';
 import ButtonGroup from '../components/ButtonGroup.vue';
 import DataView from '../components/DataView.vue';
+import { ws } from '../websocket';
 
 export default {
   components: {
@@ -101,52 +104,59 @@ export default {
     DataView,
   },
   props: {
-    unit: {
-      type: String,
-      default: 'Nm',
-    },
-    minSpecTorque: {
-      type: Number,
-      default: 200,
-    },
-    curTorque: {
-      type: Number,
-      default: null,
-    },
-    tarTorque: {
-      type: Number,
-      default: 0,
-    },
-    maxTorque: {
-      type: Number,
-      default: 0,
-    },
-    minTorque: {
-      type: Number,
-      default: 0,
-    },
-    curTime: Number,
-    tarTime: Number,
-    maxTime: Number,
-    minTime: Number,
-    curTurns: Number,
-    tarTurns: Number,
-    maxTurns: Number,
-    minTurns: Number,
-    curScrew: Number,
-    totalScrew: Number,
-    result: Number,
-    errorCode: Number,
-    chart: Array,
-    isChartEnd: Number,
+    temp: Object,
   },
   data() {
     return {
-      newChart: [],
-      newChartEnd: 0,
+      chartData: {
+        temp: this.temp,
+      },
+      unit: 'Nm',
+      curTorque: 0,
+      tarTorque: 0,
+      maxTorque: 0,
+      minTorque: 0,
+      curTime: 0,
+      tarTime: 0,
+      maxTime: 0,
+      minTime: 0,
+      curTurns: 0,
+      tarTurns: 0,
+      maxTurns: 0,
+      minTurns: 0,
+      result: 0,
+      firstErrorCode: '',
+      secondErrorCode: '',
+      curScrew: 0,
+      totalScrew: 0,
     };
   },
   methods: {
+    sendPage(val) {
+      const index = val;
+      const sendPage = JSON.stringify({ page: index });
+      ws.send(sendPage);
+      console.log(sendPage);
+    },
+    checkUnit() {
+      if (this.temp.unit !== undefined) {
+        this.unit = this.temp.unit;
+      }
+    },
+    checkTorque() {
+      if (this.temp.curTorque !== undefined) {
+        this.curTorque = this.torqueFormat(parseInt(this.temp.curTorque, 10));
+      }
+      if (this.temp.tarTorque !== undefined) {
+        this.tarTorque = this.torqueFormat(parseInt(this.temp.tarTorque, 10));
+      }
+      if (this.temp.maxTorque !== undefined) {
+        this.maxTorque = this.torqueFormat(parseInt(this.temp.maxTorque, 10));
+      }
+      if (this.temp.minTorque !== undefined) {
+        this.minTorque = this.torqueFormat(parseInt(this.temp.minTorque, 10));
+      }
+    },
     torqueFormat(val) {
       let newValue = 0;
       if (this.unit === 'Nm') {
@@ -161,6 +171,53 @@ export default {
         newValue = val - (val % 10);
       }
       return newValue / 1000;
+    },
+    checkTime() {
+      if (this.temp.curTime !== undefined) {
+        this.curTime = parseInt(this.temp.curTime, 10) / 100;
+      }
+      if (this.temp.tarTime !== undefined) {
+        this.tarTime = parseInt(this.temp.tarTime, 10) / 100;
+      }
+      if (this.temp.maxTime !== undefined) {
+        this.maxTime = parseInt(this.temp.maxTime, 10) / 100;
+      }
+      if (this.temp.minTime !== undefined) {
+        this.minTime = parseInt(this.temp.minTime, 10) / 100;
+      }
+    },
+    checkTurns() {
+      if (this.temp.curTurns !== undefined) {
+        this.curTurns = parseInt(this.temp.curTurns, 10) / 10;
+      }
+      if (this.temp.tarTurns !== undefined) {
+        this.tarTurns = parseInt(this.temp.tarTurns, 10) / 10;
+      }
+      if (this.temp.maxTurns !== undefined) {
+        this.maxTurns = parseInt(this.temp.maxTurns, 10) / 10;
+      }
+      if (this.temp.minTurns !== undefined) {
+        this.minTurns = parseInt(this.temp.minTurns, 10) / 10;
+      }
+    },
+    checkResult() {
+      if (this.temp.result !== undefined) {
+        this.result = parseInt(this.temp.result, 10);
+      }
+    },
+    checkScrew() {
+      if (this.temp.curScrew !== undefined) {
+        this.curScrew = parseInt(this.temp.curScrew, 10);
+      }
+      if (this.temp.totalScrew !== undefined) {
+        this.totalScrew = parseInt(this.temp.totalScrew, 10);
+      }
+    },
+    checkErrorCode() {
+      if (this.temp.errorCode !== undefined) {
+        this.firstErrorCode = this.handlerFirstErrorCode(this.temp.errorCode);
+        this.secondErrorCode = this.handlerSecondErrorCode(this.temp.errorCode);
+      }
     },
     handlerFirstErrorCode(val) {
       // eslint-disable-next-line no-bitwise
@@ -192,61 +249,25 @@ export default {
       }
       return 0;
     },
-  },
-  computed: {
-    newCurTorque() {
-      return this.torqueFormat(this.curTorque);
-    },
-    newTarTorque() {
-      return this.torqueFormat(this.tarTorque);
-    },
-    newMaxTorque() {
-      return this.torqueFormat(this.maxTorque);
-    },
-    newMinTorque() {
-      return this.torqueFormat(this.minTorque);
-    },
-    newCurTime() {
-      return this.curTime / 100;
-    },
-    newTarTime() {
-      return this.tarTime / 100;
-    },
-    newMaxTime() {
-      return this.maxTime / 100;
-    },
-    newMinTime() {
-      return this.minTime / 100;
-    },
-    newCurTurns() {
-      return this.curTurns / 10;
-    },
-    newTarTurns() {
-      return this.tarTurns / 10;
-    },
-    newMaxTurns() {
-      return this.maxTurns / 10;
-    },
-    newMinTurns() {
-      return this.minTurns / 10;
-    },
-    firstErrorCode() {
-      return this.handlerFirstErrorCode(this.errorCode);
-    },
-    secondErrorCode() {
-      return this.handlerSecondErrorCode(this.errorCode);
+    postChart() {
+      this.chartData.temp = this.temp;
     },
   },
   watch: {
-    chart: {
-      handler(newVal, val) {
-        if (newVal !== null) {
-          this.newChart = newVal;
-        } else {
-          this.newChart = val;
-        }
-      },
+    temp() {
+      this.checkUnit();
+      this.checkTorque();
+      this.checkTime();
+      this.checkTurns();
+      this.checkResult();
+      this.checkScrew();
+      this.checkErrorCode();
+      this.postChart();
     },
+  },
+
+  created() {
+    ws.addEventListener('open', this.sendPage(0));
   },
 };
 </script>
