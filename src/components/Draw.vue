@@ -1,7 +1,5 @@
 <template>
-  <div class="w-full">
-    <canvas ref="myChart" :width="width" :height="height"></canvas>
-  </div>
+  <canvas ref="myChart" :width="width" :height="height"></canvas>
 </template>
 
 <script>
@@ -20,12 +18,11 @@ export default {
       validator: (value) => value > 0,
     },
 
-    labels: Array,
-
-    datacollection: {
+    newChartArray: {
       type: Array,
-      required: true,
     },
+
+    labels: Array,
     type: {
       type: String,
       default: 'line',
@@ -37,36 +34,47 @@ export default {
       chart: null,
     };
   },
-  methods: {
-    drawChart() {
-
-    },
-  },
   watch: {
     datasets(newDatasets) {
-      if (this.chart !== null) {
-        this.chart.data.datasets = newDatasets;
-        this.chart.update();
-      }
+      console.log('chart');
+      this.chart.data.datasets = newDatasets;
+      this.chart.update();
     },
-    datacollection: {
+    newChartArray: {
       handler() {
         console.log(this.$refs.myChart);
         this.chart = new Chart(this.$refs.myChart, {
           type: this.type,
           data: {
             labels: this.labels,
-            datasets: this.datasets,
+            datasets: [
+              {
+                label: 'Torque',
+                borderColor: 'blue',
+                fill: false,
+                data: this.newChartArray,
+              },
+            ],
           },
           options: this.options,
         });
       },
     },
   },
-  //   beforeUnmount () {
-  //     if (this.chart) {
-  //       this.chart.destroy()
-  //     }
-  //   }
+  mounted() {
+    this.chart = new Chart(this.$refs.myChart, {
+      type: this.type,
+      data: {
+        labels: this.labels,
+        datasets: this.datasets,
+      },
+      options: this.options,
+    });
+  },
+  beforeUnmount() {
+    if (this.chart) {
+      this.chart.destroy();
+    }
+  },
 };
 </script>

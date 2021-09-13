@@ -15,7 +15,7 @@
   >
     <h4 class="text-3xl">Chart</h4>
     <Draw
-      :datacollection="datacollection"
+      :newChartArray="newChartArray"
       :options="chartOptions"
       :labels="index"
       :width="300"
@@ -26,9 +26,6 @@
 
 <script>
 import Draw from '../components/Draw.vue';
-// import { ws } from '../websocket';
-
-// const datasets = [5,6,8];
 
 export default {
   components: {
@@ -39,7 +36,26 @@ export default {
   },
   data() {
     return {
-      datacollection: {},
+      indexArry: [],
+      index: [],
+      newChartArray: [],
+      tempArray: [],
+      arry: [
+        {
+          label: 'Torque',
+          fill: false,
+          borderColor: 'blue',
+          data: [300, 700, 450, 750, 450],
+        },
+      ],
+      datacollection: [
+        {
+          label: 'Torque',
+          fill: false,
+          borderColor: 'blue',
+          data: this.tempChart,
+        },
+      ],
       tempChart: [],
       chartOptions: {
         elements: {
@@ -84,14 +100,10 @@ export default {
         for (let i = 0; i < this.temp.chart.length; i += 1) {
           const value = this.temp.chart[i] / 1000;
           chartArray.push(value);
-          console.log(chartArray);
         }
-        console.log(`chartArray:${chartArray}`);
         if (this.temp.isChartEnd != null) {
           // console.log('isChart', temp.isChartEnd)
-          console.log(`chartArray2:${chartArray}`);
           this.tempChart = this.tempChart.concat(chartArray);
-          console.log('tempChart:', this.tempChart);
           if (this.temp.isChartEnd === 1) {
             this.handleChartDraw();
           }
@@ -99,28 +111,50 @@ export default {
       }
     },
     handleChartDraw() {
-      const index = [];
+      this.indexArry = [];
       for (let i = 0; i < this.tempChart.length; i += 1) {
+        this.indexArry.push(i);
+      }
+      console.log('index:', Object.keys(this.indexArry));
+      console.log('tempchart', this.tempChart);
+      this.tempChart = [];
+      // localStorage.setItem('thisChart', JSON.stringify(this.datacollection));
+    },
+    drawChart() {
+      if (this.temp.chart !== undefined) {
+        let result = [];
+        if (localStorage.getItem('chart')) {
+          result = JSON.parse(localStorage.getItem('chart'));
+          console.log('memory', result);
+        }
+        const first = Object.keys(this.temp.chart).map((key) => this.temp.chart[key] / 1000);
+        console.log('result', result, typeof (result));
+
+        if (this.temp.isChartEnd !== undefined) {
+          result = result.concat(first);
+          console.log('freeze', result);
+          localStorage.setItem('chart', JSON.stringify(result));
+          if (this.temp.isChartEnd === 1) {
+            this.finishChart(result);
+          }
+        }
+      }
+    },
+    finishChart(result) {
+      const index = [];
+      for (let i = 0; i < result.length; i += 1) {
         index.push(i);
       }
-      this.datacollection = {
-        labels: index,
-        datasets: [
-          {
-            label: 'Torque',
-            fill: false,
-            borderColor: 'blue',
-            data: this.tempChart,
-          },
-        ],
-      };
-      this.tempChart = [];
-      localStorage.setItem('thisChart', JSON.stringify(this.datacollection));
+      this.newChartArray = Object.freeze(result);
+      console.log(this.newChartArray);
+      localStorage.setItem('chart', []);
+      this.index = index;
+      // this.newChartArray = [];
     },
   },
   watch: {
     temp() {
-      this.checkChart();
+      this.drawChart();
     },
   },
 };

@@ -87,7 +87,7 @@
       </div>
     </Card>
 
-    <router-view :v-bind="chartData" />
+    <router-view v-bind="chartData" />
   </div>
 </template>
 
@@ -109,7 +109,7 @@ export default {
   data() {
     return {
       chartData: {
-        temp: this.temp,
+        temp: {},
       },
       unit: 'Nm',
       curTorque: 0,
@@ -220,7 +220,6 @@ export default {
       }
     },
     handlerFirstErrorCode(val) {
-      // eslint-disable-next-line no-bitwise
       const result = val & 0x03;
       console.log('first errorcode:', result);
       if (result === 0x01) {
@@ -232,7 +231,6 @@ export default {
       return 0;
     },
     handlerSecondErrorCode(val) {
-      // eslint-disable-next-line no-bitwise
       const result = val & 0x3c;
       console.log('second errorcode:', result);
       if (result === 0x04) {

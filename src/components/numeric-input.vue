@@ -4,7 +4,7 @@
       v-if="control"
       @click="decrement"
       :disabled="numericValue <= min"
-      class="text-2xl px-3 mb-1 mt-0.5 ml-0.5 rounded-l-lg text-center text-white"
+      class="px-3 mb-1 mt-0.5 ml-0.5 rounded-l-lg text-center text-white"
       :class="[
         numericValue <= min
           ? 'bg-gray-200 pointer-events-none shadow-disabled'
@@ -14,8 +14,9 @@
       -
     </button>
     <input
-      class="text-2xl w-3/5 px-2 focus:outline-none rounded-lg"
+      class="w-3/5 px-2 focus:outline-none rounded-lg"
       ref="input"
+      :name="name"
       :value="numericValue"
       type="number"
       :max="max"
@@ -23,12 +24,12 @@
       :precision="precision"
       :step="step"
       @input="inputHandler($event.target.value)"
+      @change="inputHandler($event.target.value)"
     />
     <button
       v-if="control"
       @click="increment"
       class="
-        text-2xl
         px-3
         mb-1
         mt-0.5
@@ -40,6 +41,11 @@
         hover:bg-gray-600
         active:bg-gray-600 active:shadow-none
       "
+      :class="[
+        numericValue >= max
+          ? 'bg-gray-200 pointer-events-none shadow-disabled'
+          : ' shadow-dark bg-gray-400 hover:bg-gray-600 active:bg-gray-600 active:shadow-none',
+      ]"
     >
       +
     </button>
@@ -50,6 +56,7 @@
 export default {
   name: 'NumericInput',
   props: {
+    name: String,
     modelValue: Number,
     max: {
       type: Number,
@@ -82,12 +89,24 @@ export default {
   },
   methods: {
     decrement() {
-      const newNumber = this.toPrecision((this.numericValue -= this.step), this.precision);
-      this.updateValue(newNumber);
+      let newNumber = this.toPrecision((this.numericValue -= this.step), this.precision);
+      if (newNumber >= this.max) {
+        newNumber = this.max;
+      }
+      if (newNumber <= this.min) {
+        newNumber = this.min;
+      }
+      this.$emit('update:modelValue', newNumber);
     },
     increment() {
-      const newNumber = this.toPrecision(this.numericValue += this.step, this.precision);
-      this.updateValue(newNumber);
+      let newNumber = this.toPrecision((this.numericValue += this.step), this.precision);
+      if (newNumber >= this.max) {
+        newNumber = this.max;
+      }
+      if (newNumber <= this.min) {
+        newNumber = this.min;
+      }
+      this.$emit('update:modelValue', newNumber);
     },
     toNumber(val) {
       let num = parseFloat(val);

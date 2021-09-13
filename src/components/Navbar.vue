@@ -14,7 +14,7 @@
     "
   >
     <div class="bg-black flex h-16 order-first md:order-last">
-      <h5 class="text-white my-auto text-2xl px-5">Device {{ newDevice }}</h5>
+      <h5 class="text-white my-auto text-xl md:text-2xl px-2 md:px-5">Device {{ device }}</h5>
     </div>
     <div
       class="
@@ -41,21 +41,19 @@ export default {
   },
   data() {
     return {
-      newDevice: 0,
+      device: 0,
     };
   },
   methods: {
-
+    checkDevice() {
+      if (this.temp.device !== undefined) {
+        this.device = this.temp.device;
+      }
+    },
   },
   watch: {
-    device: {
-      handler(newVal, val) {
-        if (newVal !== null) {
-          this.newDevice = newVal;
-        } else {
-          this.newDevice = val;
-        }
-      },
+    temp() {
+      this.checkDevice();
     },
   },
 };

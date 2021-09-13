@@ -201,8 +201,6 @@ export default {
       }
     },
   },
-  computed: {
-  },
   watch: {
     temp() {
       this.initData();

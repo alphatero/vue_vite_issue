@@ -6,14 +6,12 @@ module.exports = {
   },
   plugins: ['vue'],
   rules: {
-    // 自己写一些想配置的规则
 
   },
   overrides: [
     {
       files: ['*.vue'],
       rules: {
-        // 这里写覆盖vue文件的规则
 
       },
     },
