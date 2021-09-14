@@ -11,8 +11,9 @@ module.exports = {
       colors: {
         kemp: '#F7B500',
         lucent: {
-          default: '#F4B839',
+          DEFAULT: '#F4B839',
           dark: '#F09400',
+          light: '#fbe3b0',
         },
         orange: '#fd7e14',
       },
@@ -46,10 +47,32 @@ module.exports = {
             transform: 'translateY(-100px)',
           },
         },
+        fadeRight: {
+          '0%': {
+            opacity: '0',
+            transform: 'translateX(-100px)',
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateX(0px)',
+          },
+        },
+        fadeLeft: {
+          '0%': {
+            opacity: '1',
+            transform: 'translateX(0px)',
+          },
+          '100%': {
+            opacity: '0',
+            transform: 'translateX(-100px)',
+          },
+        },
       },
       animation: {
         fadeIn: 'fadeIn 0.4s ease-out',
         fadeOut: 'fadeOut 0.4s ease-out',
+        fadeRight: 'fadeRight 0.3s ease-out',
+        fadeLeft: 'fadeLeft 0.3s ease-out',
       },
     },
     variants: {

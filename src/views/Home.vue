@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-flow-row gap-4 mb-8 grid-cols-1 md:grid-cols-4">
+  <div class="grid grid-flow-row gap-4 mb-8 grid-cols-1 lg:grid-cols-4">
     <!-- Torque -->
     <Card class="md:order-1 md:row-span-2 text-center" :title="$t('Torque')">
       <DataView
@@ -12,12 +12,12 @@
     </Card>
 
     <!-- Time -->
-    <Card class="md:order-2 md:row-span-2 text-center" :title="$t('Time')">
+    <Card class="lg:order-2 lg:row-span-2 text-center" :title="$t('Time')">
       <DataView :current="curTime" :target="tarTime" :max="maxTime" :min="minTime" :unit="'sec'" />
     </Card>
 
     <!-- Turns -->
-    <Card class="md:order-3 md:row-span-2 text-center" :title="$t('Turns')">
+    <Card class="lg:order-3 lg:row-span-2 text-center" :title="$t('Turns')">
       <DataView
         :current="curTurns"
         :target="tarTurns"
@@ -28,14 +28,14 @@
     </Card>
 
     <!-- Link -->
-    <ButtonGroup class="order-first md:order-4" />
+    <ButtonGroup class="order-first lg:order-4" />
 
     <!-- Result -->
     <Card
-      class="md:row-span-2 md:order-5 text-center"
+      class="lg:row-span-2 lg:order-5 text-center"
       :title="$t('Result')"
       :class="[
-        $route.name === 'Chart' ? 'md:col-span-1' : 'md:col-span-3',
+        $route.name === 'Chart' ? 'lg:col-span-1' : 'lg:col-span-3',
         { 'bg-white': this.result === 0 },
         { 'bg-green-500': this.result === 1 },
         { 'bg-red-500': this.result === 2 },
@@ -53,7 +53,7 @@
 
     <!-- Screw -->
     <Card
-      class="md:order-6 md:row-span-1 md:row-start-2 md:col-start-4 text-center"
+      class="lg:order-6 lg:row-span-1 lg:row-start-2 lg:col-start-4 text-center"
       :title="$t('Screw')"
       :class="{ 'bg-green-500': curScrew === totalScrew && curScrew !== 0 }"
     >
@@ -70,7 +70,7 @@
     </Card>
 
     <!-- Error code -->
-    <Card class="md:order-7 md:row-span-2 text-center" :title="$t('ErrorCode')">
+    <Card class="lg:order-7 lg:row-span-2 text-center" :title="$t('ErrorCode')">
       <div class="flex-1 flex flex-col justify-center items-center">
         <h4 class="text-center p-2 text-xl" v-if="firstErrorCode !== 0">
           {{ firstErrorCode }}
@@ -220,6 +220,7 @@ export default {
       }
     },
     handlerFirstErrorCode(val) {
+      // eslint-disable-next-line no-bitwise
       const result = val & 0x03;
       console.log('first errorcode:', result);
       if (result === 0x01) {
@@ -231,6 +232,7 @@ export default {
       return 0;
     },
     handlerSecondErrorCode(val) {
+      // eslint-disable-next-line no-bitwise
       const result = val & 0x3c;
       console.log('second errorcode:', result);
       if (result === 0x04) {

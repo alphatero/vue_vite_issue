@@ -1,11 +1,12 @@
 import { createI18n } from 'vue-i18n';
-import messages from '@intlify/vite-plugin-vue-i18n'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import messages from '@intlify/vite-plugin-vue-i18n';
 
 export default createI18n({
   legacy: true,
   locale: 'ch',
-  messages
-})
+  messages,
+});
 
 // import Vue from 'vue'
 // import VueI18n from 'vue-i18n'

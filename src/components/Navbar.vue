@@ -2,7 +2,7 @@
   <header
     class="
       z-10
-      lucent:bg-lucent-default
+      lucent:bg-lucent
       kemp:bg-kemp
       lucent:bg-opacity-70
       kemp:bg-opacity-70
@@ -29,19 +29,31 @@
       "
     ></div>
     <div class="bg-black text-white flex justify-center items-center md:hidden">
-      <a class="text-white my-auto text-3xl px-5 cursor-pointer">Menu</a>
+      <button
+        class="text-white my-auto text-2xl px-5 cursor-pointer"
+        @click="mobileNav = !mobileNav"
+      >
+        Menu
+      </button>
     </div>
   </header>
+  <MobileNav :open="mobileNav" @close="mobileNav = false" />
 </template>
 
 <script>
+import MobileNav from './MobileNav.vue';
+
 export default {
+  components: {
+    MobileNav,
+  },
   props: {
     temp: Object,
   },
   data() {
     return {
       device: 0,
+      mobileNav: false,
     };
   },
   methods: {

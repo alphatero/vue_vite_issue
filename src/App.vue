@@ -1,8 +1,8 @@
 <template>
-  <div class="flex h-screen theme-lucent ">
-    <Sidebar />
+  <div class="flex h-screen theme-lucent">
+    <Sidebar v-model="account" v-on:getLogout="checkLogout" />
     <div class="flex flex-col flex-1 w-full bg-gray-50">
-      <Navbar  v-bind="data"/>
+      <Navbar v-bind="data" />
 
       <main class="h-full overflow-y-auto bg-gray-100">
         <div class="container px-6 mx-auto grid py-10">
@@ -11,12 +11,22 @@
       </main>
     </div>
   </div>
+  <!-- Logout Modal -->
+  <Modal class="py-6" :open="isLogout" @close="afterLogout">
+    <h5 class="text-center text-xl py-6 bg-gray-100">{{ $t('LogoutComplete') }}</h5>
+    <div class="flex bg-white justify-end py-2 px-4">
+      <button class="rounded-md lucent:bg-lucent px-4 py-2" @click.prevent="afterLogout">
+        {{ $t('Close') }}
+      </button>
+    </div>
+  </Modal>
 </template>
 
 <script>
 import Sidebar from './components/Sidebar.vue';
 import Navbar from './components/Navbar.vue';
 import { ws } from './websocket';
+import Modal from './components/Modal.vue';
 
 export default {
   data() {
@@ -24,11 +34,14 @@ export default {
       data: {
         temp: {},
       },
+      account: 0,
+      isLogout: false,
     };
   },
   components: {
     Sidebar,
     Navbar,
+    Modal,
   },
   methods: {
     listen(e) {
@@ -40,6 +53,13 @@ export default {
       } else if (data.language === 1) {
         this.$i18n.locale = 'en';
       }
+      if (data.isPassword === 1) {
+        this.account = 1;
+      } else if (data.isPassword === 2) {
+        this.account = 2;
+      } else if (data.isPassword === 3) {
+        this.account = 3;
+      }
     },
     changePath() {
       const link = window.location.pathname;
@@ -49,13 +69,28 @@ export default {
         this.$router.replace('/correction').catch();
       }
     },
+    checkAccount() {
+      this.account = parseInt(sessionStorage.getItem('account'), 10);
+      console.log(`this account: ${this.account}`);
+    },
+    checkLogout() {
+      this.isLogout = true;
+    },
+    afterLogout() {
+      this.isLogout = false;
+      const isLogin = 0;
+      sessionStorage.setItem('isLogin', isLogin);
+      this.$router.replace('/').catch();
+    },
   },
   created() {
     const vm = this;
-    vm.changePath();
+    // vm.changePath();
+    this.checkAccount();
     ws.addEventListener('open', vm.changePath());
     ws.addEventListener('message', vm.listen);
   },
+
 };
 
 // This starter template is using Vue 3 experimental <script setup> SFCs

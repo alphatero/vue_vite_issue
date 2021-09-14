@@ -1,21 +1,21 @@
 <template>
   <div class="flex flex-col gap-6 items-center">
-    <Card :title="title.hardware" class="md:w-3/5 w-full">
+    <Card :title="title.hardware" class="lg:w-3/5 w-full">
       <div class="flex text-gray-400 text-2xl px-10 py-6 justify-center">
         {{ firmware }}
       </div>
     </Card>
-    <Card :title="title.software" class="md:w-3/5 w-full">
+    <Card :title="title.software" class="lg:w-3/5 w-full">
       <div class="flex text-gray-400 text-2xl px-10 py-6 justify-center">
         {{ software }}
       </div>
     </Card>
-    <Card :title="title.tool" class="md:w-3/5 w-full">
+    <Card :title="title.tool" class="lg:w-3/5 w-full">
       <div class="flex text-gray-400 text-2xl px-10 py-6 justify-center">
         {{ controlBox }}
       </div>
     </Card>
-    <Card :title="title.controller" class="md:w-3/5 w-full">
+    <Card :title="title.controller" class="lg:w-3/5 w-full">
       <div class="flex text-gray-400 text-2xl px-10 py-6 justify-center">
         {{ tool }}
       </div>

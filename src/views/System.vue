@@ -1,4 +1,5 @@
 <template>
+  <Loading :isLoading="isLoading" />
   <div class="flex flex-col gap-4 items-center justify-center">
     <!-- Device -->
     <Card :title="$t('DeviceRename')" class="lg:w-3/5 w-full">
@@ -113,10 +114,10 @@
 
     <div class="flex flex-col gap-16 mt-10 w-full md:w-2/5">
       <!-- System Reset -->
-      <SystemButton :title="$t('SystemReset')" />
+      <SystemButton :title="$t('SystemReset')" @click="systemReset" />
 
       <!-- Time Sync -->
-      <SystemButton :title="$t('TimeReset')" />
+      <SystemButton :title="$t('TimeReset')" @click="timeSync" />
 
       <!-- System update -->
       <router-link
@@ -139,23 +140,75 @@
       >
     </div>
   </div>
+  <!-- System Reset Modal -->
+  <Modal class="py-6" :open="isReset" @close="isReset = false">
+    <h5 class="text-center text-xl py-6 bg-gray-100">{{ $t('SystemResetComplete') }}</h5>
+    <div class="flex bg-white justify-end py-2 px-4">
+      <button class="rounded-md lucent:bg-lucent px-4 py-2" @click.prevent="isReset = false">
+        {{ $t('Close') }}
+      </button>
+    </div>
+  </Modal>
+  <!-- Time Sync Modal -->
+  <Modal
+    :title="$t('TimeSynchronization')"
+    class="py-6 text-xl"
+    :open="isTimeSync"
+    @close="isTimeSync = false"
+  >
+    <div class="flex w-full bg-gray-100 justify-center items-center text-right py-4 gap-4">
+      <label for="compputerTime" class="w-1/2">{{ $t('ComputerTime') }}</label>
+      <input
+        class="bg-gray-100"
+        type="text"
+        name="compputerTime"
+        id="compputerTime"
+        v-model="date.total"
+        readonly
+      />
+    </div>
+    <div class="flex w-full bg-gray-100 justify-center items-center text-right py-4 gap-4">
+      <label for="controllerTime" class="w-1/2">{{ $t('ControllerTime') }}</label>
+      <input
+        class="bg-gray-100"
+        type="text"
+        name="controllerTime"
+        id="controllerTime"
+        readonly
+        v-model="controllerDate.total"
+      />
+    </div>
+    <div class="flex bg-white justify-end py-2 px-4">
+      <button class="rounded-md lucent:bg-lucent px-4 py-2" @click.prevent="isTimeSync = false">
+        {{ $t('Close') }}
+      </button>
+    </div>
+  </Modal>
 </template>
 
 <script>
 import Card from '../components/Card.vue';
+import Modal from '../components/Modal.vue';
 import SystemButton from '../components/SystemButton.vue';
+import Loading from '../components/Loading.vue';
 import { ws } from '../websocket';
 
 export default {
   components: {
     Card,
+    Modal,
     SystemButton,
+    Loading,
   },
   props: {
     temp: Object,
   },
   data() {
     return {
+      isLoading: true,
+      isPass: false,
+      isReset: false,
+      isTimeSync: false,
       langs: [
         { name: 'ch', text: '繁體中文', value: 0 },
         { name: 'en', text: 'English', value: 1 },
@@ -168,6 +221,24 @@ export default {
       ],
       language: 0,
       device: 0,
+      date: {
+        total: '',
+        year: Number,
+        month: Number,
+        day: Number,
+        hours: Number,
+        minutes: Number,
+        seconds: Number,
+      },
+      controllerDate: {
+        total: '',
+        year: Number,
+        month: Number,
+        day: Number,
+        hours: Number,
+        minutes: Number,
+        seconds: Number,
+      },
     };
   },
   methods: {
@@ -179,11 +250,13 @@ export default {
     },
     checkDevice() {
       if (this.temp.device !== undefined) {
+        this.isLoading = false;
         this.device = parseInt(this.temp.device, 10);
       }
     },
     checkUnit() {
       if (this.temp.unit !== undefined) {
+        this.isLoading = false;
         const unit = parseInt(this.temp.unit, 10);
         if (unit === 0) {
           this.selectUnit = { value: 0, name: 'Nm' };
@@ -206,15 +279,85 @@ export default {
       const sendLan = JSON.stringify({ language: lang });
       ws.send(sendLan);
     },
+    getNowDate() {
+      const date = new Date();
+      this.date.year = date.getFullYear();
+      this.date.month = date.getMonth() + 1;
+      this.date.day = date.getDate();
+      this.date.hours = date.getHours();
+      this.date.minutes = date.getMinutes();
+      this.date.seconds = date.getSeconds();
+      console.log(
+        `${this.date.year}/${this.date.month}/${this.date.day} ${this.date.hours}:${this.date.minutes}:${this.date.seconds}`,
+      );
+    },
+    systemReset() {
+      const setSystemOk = 0;
+      const sendSystemOk = JSON.stringify({ setSystemOk });
+      ws.send(sendSystemOk);
+      this.isLoading = true;
+    },
+    checkReset() {
+      if (this.temp.setSystemOk !== undefined) {
+        const setSystemOk = parseInt(this.temp.setSystemOk, 10);
+        if (setSystemOk === 1) {
+          this.isLoading = false;
+          this.isReset = true;
+        }
+      }
+    },
+    timeSync() {
+      this.isLoading = true;
+      this.getNowDate();
+      const sendDate = JSON.stringify({
+        setTimeOk: 0,
+        year: this.date.year,
+        month: this.date.month,
+        day: this.date.day,
+        hours: this.date.hours,
+        minutes: this.date.minutes,
+        seconds: this.date.seconds,
+      });
+      console.log(sendDate);
+      ws.send(sendDate);
+    },
+    checkTimeSync() {
+      if (this.temp.setTimeOk !== undefined) {
+        const setTimeOk = parseInt(this.temp.setTimeOk, 10);
+        if (setTimeOk === 1) {
+          this.isLoading = false;
+          this.isTimeSync = true;
+          this.date.total = `${this.date.year}/${this.date.month}/${this.date.day} ${this.date.hours}:${this.date.minutes}:${this.date.seconds}`;
+          this.controllerDate.total = `${this.temp.year}/${this.temp.month}/${this.temp.day} ${this.temp.hours}:${this.temp.minutes}:${this.temp.seconds}`;
+        }
+      }
+    },
+    checkPath() {
+      const isLogin = parseInt(sessionStorage.getItem('isLogin'), 10);
+      console.log('checkPath', isLogin);
+      this.isLoading = false;
+      if (Number.isNaN(isLogin) || isLogin === 0 || isLogin === 2 || isLogin === 3) {
+        this.isPass = false;
+        sessionStorage.setItem('toPath', this.$route.path);
+        this.$router.replace('/login');
+      } else {
+        this.isPass = true;
+      }
+    },
   },
   watch: {
     temp() {
       this.checkUnit();
       this.checkDevice();
+      this.checkReset();
+      this.checkTimeSync();
     },
   },
   created() {
-    ws.addEventListener('open', this.sendPage(9));
+    this.checkPath();
+    if (this.isPass === true) {
+      ws.addEventListener('open', this.sendPage(9));
+    }
   },
 };
 </script>

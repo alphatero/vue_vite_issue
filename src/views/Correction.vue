@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center">
-    <Card :title="$t('Correction')" class="md:w-9/12 w-full">
+    <Card :title="$t('Correction')" class="lg:w-9/12 w-full">
       <div class="bg-white rounded-b-md p-2 sm:p-10">
         <div
           class="
@@ -18,7 +18,7 @@
             class="py-2"
             :class="[
               $route.name === 'CorrectionStep1'
-                ? 'border-b-4 lucent:border-lucent-default kemp:border-kemp'
+                ? 'border-b-4 lucent:border-lucent kemp:border-kemp'
                 : '',
             ]"
           >
@@ -26,7 +26,7 @@
               class="uppercase font-bold px-2 text-center"
               :class="[
                 $route.name === 'CorrectionStep1'
-                  ? 'lucent:text-lucent-default kemp:text-kemp'
+                  ? 'lucent:text-lucent kemp:text-kemp'
                   : 'text-gray-400',
               ]"
             >
@@ -37,7 +37,7 @@
             class="py-2"
             :class="[
               $route.name === 'CorrectionStep2'
-                ? 'border-b-4 lucent:border-lucent-default kemp:border-kemp'
+                ? 'border-b-4 lucent:border-lucent kemp:border-kemp'
                 : '',
             ]"
           >
@@ -45,7 +45,7 @@
               class="uppercase font-bold px-2 text-center"
               :class="[
                 $route.name === 'CorrectionStep2'
-                  ? 'lucent:text-lucent-default kemp:text-kemp'
+                  ? 'lucent:text-lucent kemp:text-kemp'
                   : 'text-gray-400',
               ]"
             >
@@ -56,7 +56,7 @@
             class="py-2"
             :class="[
               $route.name === 'CorrectionStep3'
-                ? 'border-b-4 lucent:border-lucent-default kemp:border-kemp'
+                ? 'border-b-4 lucent:border-lucent kemp:border-kemp'
                 : '',
             ]"
           >
@@ -64,7 +64,7 @@
               class="uppercase font-bold px-2 text-center"
               :class="[
                 $route.name === 'CorrectionStep3'
-                  ? 'lucent:text-lucent-default kemp:text-kemp'
+                  ? 'lucent:text-lucent kemp:text-kemp'
                   : 'text-gray-400',
               ]"
             >
@@ -75,7 +75,7 @@
             class="py-2"
             :class="[
               $route.name === 'CorrectionStep4'
-                ? 'border-b-4 lucent:border-lucent-default kemp:border-kemp'
+                ? 'border-b-4 lucent:border-lucent kemp:border-kemp'
                 : '',
             ]"
           >
@@ -83,7 +83,7 @@
               class="uppercase font-bold px-2 text-center"
               :class="[
                 $route.name === 'CorrectionStep4'
-                  ? 'lucent:text-lucent-default kemp:text-kemp'
+                  ? 'lucent:text-lucen kemp:text-kemp'
                   : 'text-gray-400',
               ]"
             >

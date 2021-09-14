@@ -14,7 +14,7 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-aside .active {
+aside .active, .mobileNav .active {
   color: black;
 }
 
@@ -40,4 +40,12 @@ aside .active {
 	100% {
 		transform: rotate(360deg);
 	}
+}
+
+input {
+  outline: none;
+}
+
+svg {
+  fill: currentColor;
 }

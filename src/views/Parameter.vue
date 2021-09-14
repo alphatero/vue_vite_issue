@@ -3,10 +3,16 @@
   <!-- Import and Export file -->
   <div class="flex flex-col gap-4">
     <div class="flex gap-4">
-      <button class="bg-gray-400 hover:bg-gray-600 rounded text-2xl text-white py-2 px-5 shadow">
+      <button
+        class="bg-gray-400 hover:bg-gray-600 rounded text-2xl text-white py-2 px-5 shadow"
+        @click.prevent="importOver = true"
+      >
         {{ $t('Import') }} {{ $t('Parameter') }}
       </button>
-      <button class="bg-gray-400 hover:bg-gray-600 rounded text-2xl text-white py-2 px-5 shadow">
+      <button
+        class="bg-gray-400 hover:bg-gray-600 rounded text-2xl text-white py-2 px-5 shadow"
+        @click.prevent="exportParameter"
+      >
         {{ $t('Export') }} {{ $t('Parameter') }}
       </button>
     </div>
@@ -396,7 +402,7 @@
     <div class="flex justify-center mt-4">
       <button
         class="
-          lucent:bg-lucent-default lucent:hover:bg-lucent-dark lucent:active:bg-lucent-dark
+          lucent:bg-lucent lucent:hover:bg-lucent-dark lucent:active:bg-lucent-dark
           hover:text-white
           actvie:text-white
           active:shadow-none
@@ -405,7 +411,7 @@
           rounded
           shadow-solid
         "
-        @click="sendParameter"
+        @click.prevent="sendParameter"
       >
         {{ $t('SendSetting') }}
       </button>
@@ -419,7 +425,7 @@
     </div>
     <div class="flex justify-end py-2 px-4 bg-gray-50">
       <button
-        class="lucent:bg-lucent-default lucent:hover:bg-lucent-dark px-4 py-2 rounded"
+        class="lucent:bg-lucent lucent:hover:bg-lucent-dark px-4 py-2 rounded"
         @click="setOver = false"
       >
         {{ $t('Close') }}
@@ -428,7 +434,7 @@
   </modal>
 
   <!-- Import paramter file -->
-  <modal :title="importModal" :open="importOver" :top="true">
+  <modal :title="importModal" :open="importOver" :top="true" @close="importOver = false">
     <div class="flex py-6 justify-center bg-gray-100 p">
       <div class="flex flex-1 border border-gray-300 rounded-lg mx-4">
         <label
@@ -454,14 +460,12 @@
           class="
             border
             transition-all
-            lucent:border-lucent-default
-            lucent:text-lucent-default
-            lucent:hover:bg-lucent-default
-            lucent:hover:text-white
+            lucent:border-lucent lucent:text-lucent lucent:hover:bg-lucent lucent:hover:text-white
             bg-white
             rounded-r-lg
             px-3
           "
+          @click.prevent="importParameter"
         >
           {{ $t('Import') }}
         </button>
@@ -508,7 +512,7 @@ export default {
       lockSelect: '2',
       isLoading: true,
       setOver: false,
-      importOver: true,
+      importOver: false,
       setParamOk: 0,
       overMaxTorque: 0,
       overMinTorque: 0,
@@ -519,10 +523,12 @@ export default {
       judgeSelect: 0,
       max: 0,
       min: 0,
+      sendPackage: {},
       setModal: this.$t('SetModal'),
       importModal: `${this.$t('Import')} ${this.$t('Parameter')}`,
       file: 'Choose file',
       tempFile: {},
+      isPass: false,
     };
   },
   methods: {
@@ -541,6 +547,7 @@ export default {
       this.checkScrew();
       this.checkSpeed();
       this.checkLockRule();
+      this.checkSetFinish();
     },
     checkUnit() {
       if (this.temp.unit !== undefined) {
@@ -659,7 +666,8 @@ export default {
       }
     },
     sendParameter() {
-      this.packageParameter();
+      const sendPackage = JSON.stringify(this.packageParameter());
+      ws.send(sendPackage);
     },
     packageParameter() {
       const sendObj = {
@@ -686,6 +694,7 @@ export default {
         countLock: parseInt(this.countLock, 10),
       };
       console.log(sendObj);
+      return sendObj;
     },
     torqueRev(val) {
       return val * 1000;
@@ -695,6 +704,11 @@ export default {
     },
     turnsRev(val) {
       return val * 10;
+    },
+    checkSetFinish() {
+      if (this.temp.setParamOk !== undefined && this.temp.setParamOk === 1) {
+        this.setOver = true;
+      }
     },
     selectedFile() {
       console.log('select a file');
@@ -712,7 +726,36 @@ export default {
         console.error(evt);
       };
     },
-    importParameter() {},
+    importParameter() {
+      this.importOver = false;
+      this.isLoading = true;
+      const sendJson = this.tempFile;
+      console.log(sendJson);
+      ws.send(sendJson);
+    },
+    exportParameter() {
+      const exportObj = this.packageParameter();
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(new Blob([JSON.stringify(exportObj)]), {
+        type: 'application / json',
+      });
+      link.setAttribute('download', 'parameter.json');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+    checkPath() {
+      const isLogin = parseInt(sessionStorage.getItem('isLogin'), 10);
+      console.log('checkPath', isLogin);
+      this.isLoading = false;
+      if (Number.isNaN(isLogin) || isLogin === 0) {
+        this.isPass = false;
+        sessionStorage.setItem('toPath', this.$route.path);
+        this.$router.replace('/login');
+      } else {
+        this.isPass = true;
+      }
+    },
   },
   watch: {
     temp() {
@@ -720,7 +763,10 @@ export default {
     },
   },
   created() {
-    ws.addEventListener('open', this.sendPage(6));
+    this.checkPath();
+    if (this.isPass === true) {
+      ws.addEventListener('open', this.sendPage(6));
+    }
   },
 };
 </script>

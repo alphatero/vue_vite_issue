@@ -5,7 +5,7 @@
       bg-white
       col-span-1
       row-span-1
-      md:col-span-3 md:row-span-4
+      lg:col-span-3 lg:row-span-4
       order-4
       p-2
       flex flex-col
@@ -36,18 +36,8 @@ export default {
   },
   data() {
     return {
-      indexArry: [],
       index: [],
       newChartArray: [],
-      tempArray: [],
-      arry: [
-        {
-          label: 'Torque',
-          fill: false,
-          borderColor: 'blue',
-          data: [300, 700, 450, 750, 450],
-        },
-      ],
       datacollection: [
         {
           label: 'Torque',
@@ -56,7 +46,6 @@ export default {
           data: this.tempChart,
         },
       ],
-      tempChart: [],
       chartOptions: {
         elements: {
           point: {
@@ -86,40 +75,9 @@ export default {
           ],
         },
       },
-      data: {
-        chart: [],
-        isChartEnd: 0,
-        unit: 'Nm',
-      },
     };
   },
   methods: {
-    checkChart() {
-      if (this.temp.chart !== undefined) {
-        const chartArray = [];
-        for (let i = 0; i < this.temp.chart.length; i += 1) {
-          const value = this.temp.chart[i] / 1000;
-          chartArray.push(value);
-        }
-        if (this.temp.isChartEnd != null) {
-          // console.log('isChart', temp.isChartEnd)
-          this.tempChart = this.tempChart.concat(chartArray);
-          if (this.temp.isChartEnd === 1) {
-            this.handleChartDraw();
-          }
-        }
-      }
-    },
-    handleChartDraw() {
-      this.indexArry = [];
-      for (let i = 0; i < this.tempChart.length; i += 1) {
-        this.indexArry.push(i);
-      }
-      console.log('index:', Object.keys(this.indexArry));
-      console.log('tempchart', this.tempChart);
-      this.tempChart = [];
-      // localStorage.setItem('thisChart', JSON.stringify(this.datacollection));
-    },
     drawChart() {
       if (this.temp.chart !== undefined) {
         let result = [];
@@ -149,7 +107,6 @@ export default {
       console.log(this.newChartArray);
       localStorage.setItem('chart', []);
       this.index = index;
-      // this.newChartArray = [];
     },
   },
   watch: {

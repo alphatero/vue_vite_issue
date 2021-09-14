@@ -27,14 +27,14 @@
       <button
         class="
           bg-transparent
-          lucent:text-lucent-default
+          lucent:text-lucent
           border
-          lucent:border-lucent-default
+          lucent:border-lucent
           font-bold
           py-2
           px-4
           rounded
-          lucent:hover:bg-lucent-default lucent:hover:text-white
+          lucent:hover:bg-lucent lucent:hover:text-white
           w-24
         "
         @click="handleReset()"
@@ -46,7 +46,7 @@
           bg-transparent
           lucent:text-white
           border
-          lucent:border-lucent-default lucent:bg-lucent-default
+          lucent:border-lucent lucent:bg-lucent
           font-bold
           py-2
           px-4

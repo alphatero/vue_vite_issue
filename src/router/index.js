@@ -14,6 +14,16 @@ const routes = [
     ],
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/Login.vue'),
+  },
+  {
+    path: '/signup',
+    name: 'Signup',
+    component: () => import('../views/Signup.vue'),
+  },
+  {
     path: '/correction',
     name: 'Correction',
     redirect: { name: 'CorrectionStep1' },

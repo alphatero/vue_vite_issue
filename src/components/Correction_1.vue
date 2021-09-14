@@ -44,6 +44,7 @@ export default {
     return {
       slope: 0,
       intercept: 0,
+      isPass: false,
     };
   },
   methods: {
@@ -61,6 +62,18 @@ export default {
       ws.send(sendPage);
       console.log(sendPage);
     },
+    checkPath() {
+      const isLogin = parseInt(sessionStorage.getItem('isLogin'), 10);
+      console.log('checkPath', isLogin);
+      this.isLoading = false;
+      if (Number.isNaN(isLogin) || isLogin === 0) {
+        this.isPass = false;
+        sessionStorage.setItem('toPath', this.$route.path);
+        this.$router.replace('/login');
+      } else {
+        this.isPass = true;
+      }
+    },
   },
   watch: {
     temp() {
@@ -68,7 +81,10 @@ export default {
     },
   },
   created() {
-    ws.addEventListener('open', this.sendPage(2));
+    this.checkPath();
+    if (this.isPass === true) {
+      ws.addEventListener('open', this.sendPage(2));
+    }
   },
 };
 </script>
