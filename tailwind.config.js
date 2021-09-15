@@ -9,18 +9,13 @@ module.exports = {
     themeVariants: ['kemp', 'hr', 'lucent'],
     extend: {
       colors: {
-        kemp: '#F7B500',
-        lucent: {
+        k: '#F7B500',
+        l: {
           DEFAULT: '#F4B839',
           dark: '#F09400',
           light: '#fbe3b0',
         },
         orange: '#fd7e14',
-      },
-      backgroundImage: {
-        'logo-kemp': "url('./src/assets/KempLogo.png')",
-        'logo-lucent': "url('./src/assets/LOGO_dark.png')",
-        'logo-lucent-md': "url('./src/assets/LOGO_light.png')",
       },
       boxShadow: {
         dark: '0 2px 2px 0 rgba(0, 0, 0, .7)',

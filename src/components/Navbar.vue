@@ -2,10 +2,8 @@
   <header
     class="
       z-10
-      lucent:bg-lucent
-      kemp:bg-kemp
-      lucent:bg-opacity-70
-      kemp:bg-opacity-70
+      l:bg-opacity-70
+      k:bg-opacity-70
       shadow-md
       flex
       md:flex-row-reverse
@@ -18,8 +16,6 @@
     </div>
     <div
       class="
-        kemp:bg-logo-kemp
-        lucent:bg-logo-lucent
         h-16
         bg-contain bg-no-repeat bg-center
         md:order-first
@@ -37,15 +33,12 @@
       </button>
     </div>
   </header>
-  <MobileNav :open="mobileNav" @close="mobileNav = false" />
 </template>
 
 <script>
-import MobileNav from './MobileNav.vue';
 
 export default {
   components: {
-    MobileNav,
   },
   props: {
     temp: Object,
@@ -55,18 +48,6 @@ export default {
       device: 0,
       mobileNav: false,
     };
-  },
-  methods: {
-    checkDevice() {
-      if (this.temp.device !== undefined) {
-        this.device = this.temp.device;
-      }
-    },
-  },
-  watch: {
-    temp() {
-      this.checkDevice();
-    },
   },
 };
 </script>

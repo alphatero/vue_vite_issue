@@ -1,32 +1,23 @@
 <template>
   <div class="flex h-screen theme-lucent">
-    <Sidebar v-model="account" v-on:getLogout="checkLogout" />
+    <!-- <Sidebar v-model="account" v-on:getLogout="checkLogout" /> -->
     <div class="flex flex-col flex-1 w-full bg-gray-50">
       <Navbar v-bind="data" />
 
       <main class="h-full overflow-y-auto bg-gray-100">
         <div class="container px-6 mx-auto grid py-10">
           <router-view v-bind="data"></router-view>
+
         </div>
       </main>
     </div>
   </div>
-  <!-- Logout Modal -->
-  <Modal class="py-6" :open="isLogout" @close="afterLogout">
-    <h5 class="text-center text-xl py-6 bg-gray-100">{{ $t('LogoutComplete') }}</h5>
-    <div class="flex bg-white justify-end py-2 px-4">
-      <button class="rounded-md lucent:bg-lucent px-4 py-2" @click.prevent="afterLogout">
-        {{ $t('Close') }}
-      </button>
-    </div>
-  </Modal>
+
 </template>
 
 <script>
-import Sidebar from './components/Sidebar.vue';
 import Navbar from './components/Navbar.vue';
 import { ws } from './websocket';
-import Modal from './components/Modal.vue';
 
 export default {
   data() {
@@ -39,9 +30,9 @@ export default {
     };
   },
   components: {
-    Sidebar,
+    // Sidebar,
     Navbar,
-    Modal,
+    // Modal,
   },
   methods: {
     listen(e) {

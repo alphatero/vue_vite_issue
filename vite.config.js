@@ -1,14 +1,9 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { defineConfig } from 'vite';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import vue from '@vitejs/plugin-vue';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import vueI18n from '@intlify/vite-plugin-vue-i18n';
 import path from 'path';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { viteSingleFile } from 'vite-plugin-singlefile';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
